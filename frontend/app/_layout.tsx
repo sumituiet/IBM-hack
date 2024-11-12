@@ -1,37 +1,63 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
-import 'react-native-reanimated';
+import { Stack, useRouter } from "expo-router";
+import React, { useState, useEffect } from "react";
+import { Session } from "@supabase/supabase-js";
+import { supabase } from "../components/supabaseClient";
 
-import { useColorScheme } from '@/hooks/useColorScheme';
+export default function Rootlayout() {
+    
+    const [session, setSession] = useState<Session | null>(null);
+    const router = useRouter();
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
+    useEffect(() => {
+        // Fetch the session and set it in state
+        supabase.auth.getSession().then(({ data: { session } }) => {
+            setSession(session);
+        });
 
-export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
+        // Listen for changes to the auth state
+        supabase.auth.onAuthStateChange((_event, session) => {
+            setSession(session);
+        });
+    }, []);
 
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
+    useEffect(() => {
+        // Redirect based on session state
+        if (session) {
+            router.replace("/authenticated");
+        } else {
+            router.replace("/");
+        }
+    }, [session]);
 
-  if (!loaded) {
-    return null;
-  }
-
-  return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-    </ThemeProvider>
-  );
+    return (
+        <Stack>
+            <Stack.Screen
+                name="index"
+                options={{
+                    title: "login screen",
+                    headerShown: false,
+                    headerTitle: "login screen",
+                    // headerTitleStyle: { fontWeight: "bold" },
+                }}
+            />
+            <Stack.Screen
+                name="register"
+                options={{
+                    title: "register",
+                    headerShown: false,
+                    headerTitle: "register screen",
+                    // headerTitleStyle: { fontWeight: "bold" },
+                }}
+            />
+            <Stack.Screen
+                name="authenticated"
+                options={{
+                    title: "authenticated",
+                    headerShown: false,
+                    headerTitle: "authenticated screen",
+                    // headerTitleStyle: { fontWeight: "bold" },
+                }}
+            />
+        </Stack>
+    );
 }
