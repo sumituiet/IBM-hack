@@ -2,9 +2,15 @@ import { Stack, useRouter } from "expo-router";
 import React, { useState, useEffect } from "react";
 import { Session } from "@supabase/supabase-js";
 import { supabase } from "../components/supabaseClient";
+import * as ScreenOrientation from 'expo-screen-orientation';
 
 export default function Rootlayout() {
-    
+
+    useEffect(() => {
+        // Unlock orientation to allow both portrait and landscape globally
+        ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.DEFAULT);
+      }, []);
+
     const [session, setSession] = useState<Session | null>(null);
     const router = useRouter();
 
