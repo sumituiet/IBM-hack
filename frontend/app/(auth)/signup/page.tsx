@@ -34,7 +34,7 @@ export default function SignupPage() {
                             Please check your email and confirm your account to complete the registration.
                         </p>
                         <button 
-                            onClick={() => router.push('/login')}
+                            onClick={() => router.push('/onboarding/welcome')}
                             className="mt-4 w-full py-2 bg-yellow text-black font-semibold rounded-md hover:bg-yellow-600 transition duration-200"
                         >
                             Go to Login

@@ -10,9 +10,9 @@ export default function GetStarted() {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-navy text-yellow px-6">
-      <h1 className="text-3xl font-bold mb-6 text-center">You're All Set!</h1>
+      <h1 className="text-3xl font-bold mb-6 text-center">You&apos;re All Set!</h1>
       <p className="text-center mb-8">
-        Welcome aboard! You’re now ready to start exploring your personalized financial tools, resources, and advice.
+        Welcome aboard! You&apos;re now ready to start exploring your personalized financial tools, resources, and advice.
       </p>
 
       <button
