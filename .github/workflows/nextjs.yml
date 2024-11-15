@@ -1,0 +1,43 @@
+# .github/workflows/deploy.yml
+
+name: Deploy Frontend to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main  # Replace with your default branch if different
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: frontend  # Set the working directory to 'frontend'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'  # Specify your Node.js version
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build frontend project
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+        run: npm run build && npm run export
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./frontend/out  # Path to the exported static files
