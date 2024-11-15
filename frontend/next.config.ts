@@ -1,7 +1,19 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  output: 'export',
+  images: { unoptimized: true },
+  experimental: {
+    appDir: true,
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/login',
+        destination: '/api/auth/login',
+      },
+    ];
+  },
 };
 
 export default nextConfig;
