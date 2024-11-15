@@ -1,5 +1,3 @@
-# .github/workflows/deploy.yml
-
 name: Deploy Frontend to GitHub Pages
 
 on:
@@ -29,6 +27,12 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+
+      - name: Debug environment variables
+        # Debug step to print environment variables (ensure they are sanitized and do not reveal secrets in public repos)
+        run: |
+          echo "Supabase URL: $NEXT_PUBLIC_SUPABASE_URL"
+          echo "Supabase Key: $NEXT_PUBLIC_SUPABASE_ANON_KEY"
 
       - name: Build frontend project
         env:
