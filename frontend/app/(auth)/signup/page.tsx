@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 export default function SignupPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [name, setName] = useState('');
+    const [username, setName] = useState('');
     const [error, setError] = useState<string | null>(null);
     const [isConfirmationSent, setIsConfirmationSent] = useState(false);
     const router = useRouter();
@@ -45,7 +45,7 @@ export default function SignupPage() {
                         <input
                             type="text"
                             placeholder="Name"
-                            value={name} 
+                            value={username} 
                             onChange={(e) => setName(e.target.value)}
                             className="w-full px-4 py-2 mb-4 border text-black rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
