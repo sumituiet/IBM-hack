@@ -15,7 +15,7 @@ export default function RootLayout({
                 starColor={[255, 255, 255]}
                 speedFactor={0.05}
                 backgroundColor="black"
-        />        
+        />
         <main>{children}</main>
       </body>
     </html>

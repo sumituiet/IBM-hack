@@ -1,84 +1,144 @@
 "use client";
-import Navbar from '@/components/Navbar';
-import Link from 'next/link';
+import React, { useEffect, useState } from "react";
+import Navbar from "@/components/Navbar";
+import Link from "next/link";
+import { supabase } from "../_lib/supabaseClient";
+import { Pie,Bar } from 'react-chartjs-2';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement } from 'chart.js';
+
 
 export default function Dashboard() {
+    
+    const [loading, setLoading] = useState(true);
+    const [email, setUsername] = useState<string | null>(null);
+
+    useEffect(() => {
+        const getSession = async () => {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (session) {
+                const { data: { user } } = await supabase.auth.getUser();
+                setUsername(user?.email || null);
+            }
+            setLoading(false);
+        };
+
+        getSession();
+    }, []);
+      
+    useEffect(() => {
+        const getSession = async () => {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (session) {
+                const { data: { user } } = await supabase.auth.getUser();
+                setUsername(user?.email || null);
+            }
+            setLoading(false);
+        };
+
+        getSession();
+    }, []);
+
+    ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement);
+
+    const earned = 1024;
+    const earnedTarget = 1800;
+    const spent = 1200;
+    const wallet = 12999;
+
+    const data = {
+        labels: ['Rent', 'Groceries', 'Utilities', 'Entertainment', 'Miscellaneous'],
+        datasets: [
+            {
+                label: 'My Spendings',
+                data: [500, 300, 200, 100, 50],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                ],
+                borderWidth: 1,
+            },
+        ],
+    };
+      
   return (
     <div>
         <Navbar />
-        <div className="p-6 bg-navy min-h-screen text-yellow">
-            <h1 className="text-3xl font-bold mb-8 text-center">Welcome to Your Financial Dashboard</h1>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                
-                {/* Financial Health Check Summary */}
-                <div className="p-6 bg-white rounded-lg shadow-md text-gray-800">
-                <h2 className="text-xl font-semibold text-navy mb-4">Financial Health Check</h2>
-                <p className="mb-4">See an overview of your financial health and personalized tips to improve it.</p>
-                <Link href="/health-check-summary">
-                    <button className="w-full py-2 bg-yellow text-navy font-semibold rounded-md hover:bg-yellow-600 transition duration-200">
-                    View Health Summary
-                    </button>
-                </Link>
-                </div>
 
-                {/* Financial Tools */}
-                <div className="p-6 bg-white rounded-lg shadow-md text-gray-800">
-                <h2 className="text-xl font-semibold text-navy mb-4">Financial Tools</h2>
-                <p className="mb-4">Access tools like the Budget Calculator, Savings Planner, and Spending Analyser.</p>
-                <Link href="/financial-tools">
-                    <button className="w-full py-2 bg-yellow text-navy font-semibold rounded-md hover:bg-yellow-600 transition duration-200">
-                    Go to Tools
-                    </button>
-                </Link>
+        <div className="flex justify-center grid grid-cols-4 gap-4 ml-20">
+            <div className="max-w-sm rounded overflow-hidden shadow-lg">
+            <img className="w-full" src="https://github.com/sumituiet.png" alt="Sunset in the mountains" />
+            <div className="px-6 py-4">
+                <div className="font-bold text-xl mb-2">Welcome to your Dashboard</div>
+                {!loading && (
+                <div className="welcome-card">
+                    <h1>Welcome to your Dashboard</h1>
+                    {email ? <p>Logged in as: {email}</p> : <p>Please log in to access your dashboard.</p>}
+                    <Link href="/profile">
+                    <button className="border round">Go to profile</button>
+                    </Link>
                 </div>
-
-                {/* Education Modules */}
-                <div className="p-6 bg-white rounded-lg shadow-md text-gray-800">
-                <h2 className="text-xl font-semibold text-navy mb-4">Education Modules</h2>
-                <p className="mb-4">Learn about budgeting, saving, investing, and more with our interactive courses.</p>
-                <Link href="/education-modules">
-                    <button className="w-full py-2 bg-yellow text-navy font-semibold rounded-md hover:bg-yellow-600 transition duration-200">
-                    Start Learning
-                    </button>
-                </Link>
-                </div>
-
-                {/* Connect with Advisors */}
-                <div className="p-6 bg-white rounded-lg shadow-md text-gray-800">
-                <h2 className="text-xl font-semibold text-navy mb-4">Financial Advisors</h2>
-                <p className="mb-4">Get personalized advice by connecting with certified financial advisors.</p>
-                <Link href="/connect-advisors">
-                    <button className="w-full py-2 bg-yellow text-navy font-semibold rounded-md hover:bg-yellow-600 transition duration-200">
-                    Connect Now
-                    </button>
-                </Link>
-                </div>
-
-                {/* Community Resources */}
-                <div className="p-6 bg-white rounded-lg shadow-md text-gray-800">
-                <h2 className="text-xl font-semibold text-navy mb-4">Community Resources</h2>
-                <p className="mb-4">Explore resources and assistance programs available in your area.</p>
-                <Link href="/community-resources">
-                    <button className="w-full py-2 bg-yellow text-navy font-semibold rounded-md hover:bg-yellow-600 transition duration-200">
-                    View Resources
-                    </button>
-                </Link>
-                </div>
-
-                {/* Progress Tracker */}
-                <div className="p-6 bg-white rounded-lg shadow-md text-gray-800">
-                <h2 className="text-xl font-semibold text-navy mb-4">Progress Tracker</h2>
-                <p className="mb-4">Monitor your financial literacy progress and see achievements over time.</p>
-                <Link href="/progress-tracker">
-                    <button className="w-full py-2 bg-yellow text-navy font-semibold rounded-md hover:bg-yellow-600 transition duration-200">
-                    View Progress
-                    </button>
-                </Link>
-                </div>
+                )}
             </div>
             </div>
-    </div>
+            <div className="max-w-sm rounded overflow-hidden shadow-lg">
+            <div className="px-6 py-4">
+                <div className="font-bold text-xl mb-2">My Spendings</div>
+                <Pie data={data} />
+            </div>
+
+
+            </div>
+            <div className="max-w-sm rounded overflow-hidden shadow-lg">
+            <div className="p-6 shadow-md rounded-md">
+                <div className="font-bold text-xl mb-4">My Cashflow for {new Date().toLocaleString('default', { month: 'long' })}</div>
+
+                {/* Earned Progress */}
+                <div className="mb-4">
+                    <div className="flex justify-between mb-1">
+                    <span className="text-gray-600">Earned</span>
+                    <span className="text-gray-600">${earned} of ${earnedTarget}</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2.5">
+                    <div
+                        className="bg-green-500 h-2.5 rounded-full"
+                        style={{ width: `${(earned / earnedTarget) * 100}%` }}
+                    ></div>
+                    </div>
+                </div>
+
+                {/* Spent Progress */}
+                <div className="mb-4">
+                    <div className="flex justify-between mb-1">
+                    <span className="text-gray-600">Spent</span>
+                    <span className="text-gray-600">${spent}</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2.5">
+                    <div
+                        className="bg-blue-500 h-2.5 rounded-full"
+                        style={{ width: `${Math.min((spent / earnedTarget) * 100, 100)}%` }}
+                    ></div>
+                    </div>
+                </div>
+
+                {/* Wallet Amount */}
+                <div className="mt-4 text-center text-lg font-bold text-gray-100">
+                    My wallet <span className="text-green-600 text-2xl">${wallet.toLocaleString()}</span>
+                </div>
+                </div>
+                        </div>
+                        </div>
+        </div>
+
    
   );
 }
