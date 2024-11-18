@@ -114,13 +114,13 @@ export default function FinancialChatbot() {
       <div className="flex justify-center gap-4 pb-4">
         <button
           className="py-2 px-6 border border-gray-300 font-semibold rounded-md hover:bg-gray-200 transition"
-          onClick={() => alert("Connecting to Real Advisors...")}
+          onClick={() => (window.location.href = "/chatbot")}
         >
           Connect with Advisors
         </button>
         <button
           className="py-2 px-6 border border-gray-300 font-semibold rounded-md hover:bg-gray-200 transition"
-          onClick={() => alert("Finding Local Banks...")}
+          onClick={() => (window.location.href = "/local-banks")}
         >
           Find Local Banks
         </button>

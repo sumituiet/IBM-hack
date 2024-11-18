@@ -1,125 +1,113 @@
-"use client";
+// app/page.tsx
 
-import { useState } from "react";
-import ReactMarkdown from "react-markdown";
+'use client';
 
-export default function ChatbotPage() {
-  const [messages, setMessages] = useState<{ user: string; bot: string }[]>([]);
-  const [inputValue, setInputValue] = useState("");
-  const [isSidebarVisible, setIsSidebarVisible] = useState(true);
+import Navbar from '@/components/Navbar';
+import React, { useState } from 'react';
+import axios from 'axios';
 
-  const sendMessage = async (question: string) => {
+export default function Chatbot() {
+  const [messages, setMessages] = useState<
+    { sender: 'user' | 'advisor'; text: string }[]
+  >([]);
+  const [inputText, setInputText] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const sendMessage = async () => {
+    if (inputText.trim() === '') return;
+
+    // Add user's message to the chat
+    setMessages((prevMessages) => [
+      ...prevMessages,
+      { sender: 'user', text: inputText },
+    ]);
+
+    const question = inputText;
+    setInputText('');
+    setLoading(true);
+
     try {
-      const response = await fetch("http://localhost:8000/query", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ question }),
-      });
+      // Send POST request to the /query endpoint
+      const response = await axios.post('http://localhost:8000/query', { question });
 
-      if (!response.ok) {
-        throw new Error("Failed to fetch response from the server.");
-      }
-
-      const data = await response.json();
-      return data.answer; // Extract the 'answer' from the QueryResponse
+      // Add bot's response to the chat
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { sender: 'advisor', text: response.data.answer },
+      ]);
     } catch (error) {
-      console.error("Error sending message:", error);
-      return "Sorry, I couldn't connect to the server.";
+      // Handle error
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { sender: 'advisor', text: 'Sorry, something went wrong. Please try again later.' },
+      ]);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!inputValue.trim()) return;
-
-    const userMessage = inputValue;
-    setMessages([...messages, { user: userMessage, bot: "..." }]);
-    setInputValue("");
-
-    const botResponse = await sendMessage(userMessage);
-
-    setMessages((prevMessages) => {
-      const updatedMessages = [...prevMessages];
-      updatedMessages[updatedMessages.length - 1].bot = botResponse;
-      return updatedMessages;
-    });
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      sendMessage();
+    }
   };
 
   return (
-    <div className="flex h-screen bg-gray-100">
-      {/* Sidebar */}
-      {isSidebarVisible && (
-        <div className="w-1/4 bg-gray-800 text-white flex flex-col">
-          <div className="p-4 text-xl font-semibold border-b border-gray-700 flex justify-between items-center">
-            <span>Chat History</span>
-            <button
-              onClick={() => setIsSidebarVisible(false)}
-              className="text-gray-300 hover:text-gray-100"
-            >
-              Hide
-            </button>
-          </div>
-          <div className="flex-grow overflow-y-auto p-4 space-y-2">
+    <div>
+      <Navbar />
+      <div className="max-h-screen text-yellow p-6">
+        <div className="max-w-4xl mx-auto p-8 rounded-lg shadow-lg flex flex-col h-[80vh] bg-gray-800">
+          <h1 className="text-3xl font-bold mb-6 text-center">Advisor</h1>
+
+          {/* Chat Window */}
+          <div className="flex-1 overflow-auto mb-4 p-4 bg-gray-700 rounded">
             {messages.map((message, index) => (
-              <div key={index} className="bg-gray-700 p-2 rounded-md">
-                {message.user}
+              <div
+                key={index}
+                className={`mb-4 flex ${
+                  message.sender === 'user' ? 'justify-end' : 'justify-start'
+                }`}
+              >
+                <div
+                  className={`rounded-lg p-3 max-w-xs ${
+                    message.sender === 'user'
+                      ? 'bg-blue-500 text-white'
+                      : 'bg-gray-300 text-black'
+                  }`}
+                >
+                  {message.text}
+                </div>
               </div>
             ))}
+            {loading && (
+              <div className="mb-4 flex justify-start">
+                <div className="rounded-lg p-3 max-w-xs bg-gray-300 text-black">
+                  Typing...
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Input Area */}
+          <div className="flex">
+            <input
+              type="text"
+              value={inputText}
+              onChange={(e) => setInputText(e.target.value)}
+              onKeyPress={handleKeyPress}
+              className="flex-1 px-3 py-2 border rounded-l"
+              placeholder="Type your message..."
+              disabled={loading}
+            />
+            <button
+              onClick={sendMessage}
+              className="bg-green-500 text-white px-4 py-2 rounded-r hover:bg-green-600 disabled:opacity-50"
+              disabled={loading}
+            >
+              Send
+            </button>
           </div>
         </div>
-      )}
-
-      {/* Main Chat Area */}
-      <div className={`flex flex-col ${isSidebarVisible ? "w-3/4" : "w-full"}`}>
-        {/* Header */}
-        <div className="bg-gray-700 text-white py-4 text-center text-xl font-semibold relative">
-          {isSidebarVisible ? null : (
-            <button
-              onClick={() => setIsSidebarVisible(true)}
-              className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-blue-600 text-white px-3 py-1 rounded-md hover:bg-blue-700 transition"
-            >
-              Show
-            </button>
-          )}
-          Chatbot
-        </div>
-
-        {/* Chat Area */}
-        <div className="flex-grow overflow-y-auto p-4 space-y-4">
-          {messages.map((message, index) => (
-            <div key={index} className="space-y-2">
-              <div className="p-3 float-left rounded-lg bg-gray-300 text-gray-800 max-w-m self-start">
-                {message.user}
-              </div>
-              <div className=" p-3 float-right rounded-lg bg-blue-500 max-w-l text-white self-end">
-              <ReactMarkdown>{message.bot}</ReactMarkdown>
-
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Input Area */}
-        <form
-          onSubmit={handleSubmit}
-          className="flex items-center gap-2 p-4 border-t border-gray-300"
-        >
-          <input
-            type="text"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            placeholder="Type your question..."
-            className="flex-grow border bg-gray-600 border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring focus:ring-blue-300"
-          />
-          <button
-            type="submit"
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
-          >
-            Send
-          </button>
-        </form>
       </div>
     </div>
   );
