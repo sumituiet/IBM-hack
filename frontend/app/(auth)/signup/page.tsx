@@ -26,7 +26,7 @@ export default function SignupPage() {
         <div className="flex flex-col items-center justify-center h-screen bg-navy text-yellow px-6">
             <h1 className="text-3xl font-bold mb-8 text-center">Sign Up</h1>
             
-            <div className="w-full max-w-sm bg-white rounded-lg p-8 shadow-lg">
+            <div className="w-full max-w-sm bg-white rounded-lg p-8 shadow-lg bg-australia bg-gray-500">
                 {isConfirmationSent ? (
                     <div className="text-center">
                         <h2 className="text-lg font-semibold mb-4">Confirmation Required</h2>
@@ -68,7 +68,7 @@ export default function SignupPage() {
                         
                         <button
                             onClick={handleSignup}
-                            className="w-full py-2 bg-yellow text-black font-semibold rounded-md hover:bg-yellow-600 transition duration-200"
+                            className="w-full py-2 bg-yellow text-white font-semibold rounded-md hover:bg-yellow-600 transition duration-200"
                         >
                             Sign Up
                         </button>
@@ -78,7 +78,7 @@ export default function SignupPage() {
                 )}
 
                 {!isConfirmationSent && (
-                    <p className="mt-4 text-gray-700">
+                    <p className="mt-4 text-gray-100">
                         Already have an account?{' '}
                         <a href="/login" className="text-blue-500 hover:underline">Login</a>
                     </p>

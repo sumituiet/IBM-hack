@@ -6,12 +6,17 @@ export default {
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      backgroundImage:{
+        'indi': "url(../public/back.svg)",
+        'australia': "url(/australia.svg)",
+      }
     },
   },
   plugins: [],
