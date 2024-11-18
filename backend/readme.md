@@ -19,5 +19,5 @@ This endpoint allows the user to send a query, and the backend will return a gen
 
 ```json
 {
-  "question": "What is the current stock price of XYZ company?"
+  "question": "What is the full form of ATO?"
 }
