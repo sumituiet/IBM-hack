@@ -52,9 +52,7 @@ The Community Resources section connects users to a wide range of trusted tools 
 Each resource includes a brief description and a link for further exploration, helping users access tools like budgeting calculators, debt helplines, emergency services, and government programs to address financial challenges effectively.
 ![Community Resources](https://github.com/user-attachments/assets/e07f5108-784f-4aac-92c3-752db326f5eb)
 
-## Technologies Used
+## Technologies Utilised
 
-- **Frontend**: HTML, CSS, JavaScript
-- **Backend**: Node.js, Express.js
-- **Database**: MongoDB
-- **Hosting**: Cloudflare
+- **Frontend**: NextJS
+- **Backend**: Superbase
