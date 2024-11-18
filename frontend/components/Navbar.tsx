@@ -27,12 +27,12 @@ export default function Navbar() {
 
 
 <div className="flex items-center justify-between max-w-6xl mx-auto">
-  <button
+  {/* <button
     onClick={toggleSidebar}
     className="text-yellow hover:text-blue-300 transition duration-200"
   >
     {isSidebarVisible ? "☰" : '☰'}
-  </button>
+  </button> */}
   
   
   {/* Logo */}
@@ -45,10 +45,8 @@ export default function Navbar() {
     <Link href="/dashboard" className="hover:text-blue-300 transition duration-200">Dashboard</Link>
     <Link href="/financial-tools" className="hover:text-blue-300 transition duration-200">Tools</Link>
     <Link href="/education-modules" className="hover:text-blue-300 transition duration-200">Education</Link>
-    <Link href="/health-check-summary" className="hover:text-blue-300 transition duration-200">Health Check</Link>
     <Link href="/connect-advisors" className="hover:text-blue-300 transition duration-200">Advisors</Link>
     <Link href="/community-resources" className="hover:text-blue-300 transition duration-200">Resources</Link>
-    <Link href="/progress-tracker" className="hover:text-blue-300 transition duration-200">Progress</Link>
     <button
       onClick={handleLogout}
       className="bg-yellow text-navy font-semibold px-4 py-2 rounded-md hover:bg-yellow-600 transition duration-200"

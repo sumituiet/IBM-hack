@@ -1,7 +1,6 @@
 'use client';
 import Navbar from '@/components/Navbar_handing';
 import Link from 'next/link';
-import Sidebar from '@/components/Sidebar';
 export default function Welcome() {
   
   return (
