@@ -15,10 +15,10 @@ Welcome to **Moola**, a financial literacy platform designed to empower users to
 ![Welcome Page](https://github.com/user-attachments/assets/1c3d121e-3097-41a5-8c00-3a5794257626)
 
 ### Login Page
-![Login Page]![image](https://github.com/user-attachments/assets/6dd38544-fe26-47e5-bc0c-343ac59f20b5)
+![Login Page](https://github.com/user-attachments/assets/6dd38544-fe26-47e5-bc0c-343ac59f20b5)
 
 ### Dashboard
-![Dashboard]![image](https://github.com/user-attachments/assets/32186f2e-e4a6-43e2-8e35-776ea8015efc)
+![Dashboard](https://github.com/user-attachments/assets/32186f2e-e4a6-43e2-8e35-776ea8015efc)
 
 
 ## Technologies Used
