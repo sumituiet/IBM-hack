@@ -1,8 +1,3 @@
-
-To center all images in Markdown, you can use HTML within the markdown file since standard Markdown doesn't support direct image alignment. Here's how you can modify your README.md to center the images:
-
-markdown
-Copy code
 # Moola - Financial Literacy App
 
 Welcome to **Moola**, a financial literacy platform designed to empower users to take control of their financial future through culturally inclusive tools and resources.
