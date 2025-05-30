@@ -52,7 +52,7 @@ kubernetes==31.0.0
 llama-cloud==0.1.5
 llama-index==0.11.23
 llama-index-agent-openai==0.3.4
-llama-index-cli==0.3.1
+llama-index-cli==0.4.1
 llama-index-core==0.11.23
 llama-index-embeddings-huggingface==0.3.1
 llama-index-embeddings-instructor==0.2.1
